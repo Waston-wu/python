@@ -9,6 +9,7 @@ user = friends[0]["UserName"]
 
 num = 0
 for i in friends:
+    print (i)
     img = itchat.get_head_img(userName=i["UserName"])
     fileImage = open('D:' + "/wechat_head_image/" + str(num) + ".jpg",'wb')
     fileImage.write(img)

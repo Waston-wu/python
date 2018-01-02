@@ -1,26 +1,24 @@
-import itchat, time
+from tkinter import *
+import tkinter.messagebox as messagebox
 
-itchat.auto_login()
+class Application(Frame):
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.pack()
+        self.createWidgets()
 
-@itchat.msg_register(['Text', 'Map', 'Card', 'Note', 'Sharing'])
-def text_reply(msg):
-    itchat.send('%s: %s'%(msg['Type'], msg['Text']), msg['FromUserName'])
+    def createWidgets(self):
+        self.nameInput = Entry(self)
+        self.nameInput.pack()
+        self.alertButton = Button(self, text='Hello', command=self.hello)
+        self.alertButton.pack()
 
-@itchat.msg_register(['Picture', 'Recording', 'Attachment', 'Video'])
-def download_files(msg):
-    fileDir = '%s%s'%(msg['Type'], int(time.time()))
-    msg['Text'](fileDir)
-    itchat.send('%s received'%msg['Type'], msg['FromUserName'])
-    itchat.send('@%s@%s'%('img' if msg['Type'] == 'Picture' else 'fil', fileDir), msg['FromUserName'])
+    def hello(self):
+        name = self.nameInput.get() or 'world'
+        messagebox.showinfo('Message', 'Hello, %s' % name)
 
-@itchat.msg_register('Friends')
-def add_friend(msg):
-    itchat.add_friend(**msg['Text'])
-    itchat.get_contract()
-    itchat.send_msg(msg['RecommendInfo']['UserName'], 'Nice to meet you!')
-
-@itchat.msg_register('Text', isGroupChat = True)
-def text_reply(msg):
-    itchat.send(u'@%s\u2005I received: %s'%(msg['ActualNickName'], msg['Content']), msg['FromUserName'])
-
-itchat.run()
+app = Application()
+# 设置窗口标题:
+app.master.title('Hello World')
+# 主消息循环:
+app.mainloop()
