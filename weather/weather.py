@@ -53,12 +53,12 @@ def get_temperature(url):
 def main():
     urls = [
         'http://www.weather.com.cn/textFC/hb.shtml',
-        # 'http://www.weather.com.cn/textFC/db.shtml',
-        # 'http://www.weather.com.cn/textFC/hd.shtml',
-        # 'http://www.weather.com.cn/textFC/hz.shtml',
-        # 'http://www.weather.com.cn/textFC/hn.shtml',
-        # 'http://www.weather.com.cn/textFC/xb.shtml',
-        # 'http://www.weather.com.cn/textFC/xn.shtml',
+        'http://www.weather.com.cn/textFC/db.shtml',
+        'http://www.weather.com.cn/textFC/hd.shtml',
+        'http://www.weather.com.cn/textFC/hz.shtml',
+        'http://www.weather.com.cn/textFC/hn.shtml',
+        'http://www.weather.com.cn/textFC/xb.shtml',
+        'http://www.weather.com.cn/textFC/xn.shtml',
     ]
     for url in urls:
         get_temperature(url)
