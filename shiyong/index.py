@@ -74,6 +74,13 @@ def get_goods(url):
                 business_sale = business_info.find_all('li')[1].find('span').text
                 # 商家评分
                 business_sock = len(business_info.find_all('li')[2]) - 1
+                # 获取商品剩余时间
+                business_time_text = soup_business.find_all('script')[3].text
+                first = business_time_text.find('new showTime(') + 13
+                last = business_time_text.find(');', first)
+                business_time_int = int(business_time_text[first:last])
+                timeArray = time.localtime(time.time() + business_time_int)
+                business_time = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
             # 存入本地数据库
 
             # 打开数据库连接
@@ -84,14 +91,14 @@ def get_goods(url):
 
             # SQL 插入语句
             sql = "INSERT INTO y_shiyong(goods_id,goods_title,goods_plat,goods_apply,goods_left,goods_price,goods_link, \
-                    business_plat, business_grade, business_sale, business_sock) \
-                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
+                    business_plat, business_grade, business_sale, business_sock, business_time) \
+                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
                    ON DUPLICATE KEY UPDATE goods_title='%s',goods_plat='%s',goods_apply='%s',goods_left='%s',goods_price='%s',goods_link='%s', \
-                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s' " % \
+                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s', business_time='%s' " % \
                   (goods_id, goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock
+                   business_plat, business_grade, business_sale, business_sock, business_time
                    , goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock
+                   business_plat, business_grade, business_sale, business_sock, business_time
                    )
             try:
                 # 执行sql语句

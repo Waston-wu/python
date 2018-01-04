@@ -2,17 +2,20 @@
 
 import requests
 from bs4 import BeautifulSoup
+import time
 
-response_business = requests.get('http://www.shiyong.com/id/56575.html')
+timeArray = time.localtime(time.time())
+otherStyleTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+print(otherStyleTime)
+
+response_business = requests.get('http://www.shiyong.com/id/5675.html')
 if response_business.status_code == 200:
     b = response_business.text
     res = b.encode(response_business.encoding).decode(response_business.apparent_encoding)
     soup_business = BeautifulSoup(res, 'lxml')
-    # 商家在网站的等级
-    business_grade_info = soup_business.find('div', class_='border-b pd5-1 mb10').find('span')
-    # if (business_grade_info.find('img') == 'None'):
-    #     business_grade = business_grade_info.text.replace('\n', '')
-    # else:
-    #     business_img = business_grade_info.find('img')['src']
-    #     business_grade = '<img src="http://www.shiyong.com' + business_img + '">'
-    print(business_grade_info.find('img') == None)
+
+    a = soup_business.find_all('script')[3].text
+    first = a.find('new showTime(')+13
+    last = a.find(');',a.find('new showTime('))
+    timeStamp = (a[first:last])
+    print(int(timeStamp))
