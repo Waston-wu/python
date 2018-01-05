@@ -30,7 +30,8 @@ def get_goods(url):
         # 这里是所有的商品信息
         goods_list = soup.find_all('dl', class_='pro-box')
         # 遍历子信息
-        for goods_info in goods_list:
+        for index, goods_info in enumerate(goods_list):
+            print('当前网页'+url+':第'+str(index+1 )+'个！')
             # 商品标题
             goods_title = goods_info.find('h2').find('a').text
             # 平台
@@ -53,6 +54,8 @@ def get_goods(url):
             goods_link = 'http://www.shiyong.com' + goods_info.find_all('p', class_='clearfix')[1].find('a')['href']
             # 商品id
             goods_id = goods_info.find_all('p', class_='clearfix')[1].find('a')['href'].split('/')[2].split('.')[0]
+            # 商品图片
+            goods_image = 'http://www.shiyong.com'+goods_info.find('img')['src']
             # 获取商家信息
             response_business = requests.get(goods_link, headers=headers_pc)
             if response_business.status_code == 200:
@@ -91,14 +94,14 @@ def get_goods(url):
 
             # SQL 插入语句
             sql = "INSERT INTO y_shiyong(goods_id,goods_title,goods_plat,goods_apply,goods_left,goods_price,goods_link, \
-                    business_plat, business_grade, business_sale, business_sock, business_time) \
-                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
+                    business_plat, business_grade, business_sale, business_sock, business_time, goods_image) \
+                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
                    ON DUPLICATE KEY UPDATE goods_title='%s',goods_plat='%s',goods_apply='%s',goods_left='%s',goods_price='%s',goods_link='%s', \
-                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s', business_time='%s' " % \
+                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s', business_time='%s', goods_image='%s' " % \
                   (goods_id, goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock, business_time
+                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image
                    , goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock, business_time
+                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image
                    )
             try:
                 # 执行sql语句
