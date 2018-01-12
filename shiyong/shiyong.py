@@ -35,7 +35,8 @@ def get_goods(url):
             # 商品标题
             goods_title = goods_info.find('h2').find('a').text
             # 平台
-            goods_plat_class = goods_info.find('h2').find('i')['class'][1]
+            tubiao = goods_info.find('h2').find_all('i')
+            goods_plat_class = tubiao[0]['class'][1]
             if (goods_plat_class == 'icon-taobao'):
                 goods_plat = '淘宝'
             elif (goods_plat_class == 'icon-tianmao1'):
@@ -44,6 +45,8 @@ def get_goods(url):
                 goods_plat = '京东'
             else:
                 goods_plat = goods_plat_class
+            # 是否支持花呗(0：不支持 1：支持)
+            is_huabei = int(len(tubiao)) - 1
             # 申请人数
             goods_apply = goods_info.find_all('p', class_='clearfix')[0].find_all('b')[0].text
             # 剩余份数
@@ -94,14 +97,14 @@ def get_goods(url):
 
             # SQL 插入语句
             sql = "INSERT INTO y_shiyong(goods_id,goods_title,goods_plat,goods_apply,goods_left,goods_price,goods_link, \
-                    business_plat, business_grade, business_sale, business_sock, business_time, goods_image) \
-                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
+                    business_plat, business_grade, business_sale, business_sock, business_time, goods_image, is_huabei) \
+                   VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s' )  \
                    ON DUPLICATE KEY UPDATE goods_title='%s',goods_plat='%s',goods_apply='%s',goods_left='%s',goods_price='%s',goods_link='%s', \
-                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s', business_time='%s', goods_image='%s' " % \
+                    business_plat='%s', business_grade='%s', business_sale='%s', business_sock='%s', business_time='%s', goods_image='%s', is_huabei='%s' " % \
                   (goods_id, goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image
+                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image, is_huabei
                    , goods_title, goods_plat, goods_apply, goods_left, goods_price, goods_link,
-                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image
+                   business_plat, business_grade, business_sale, business_sock, business_time, goods_image, is_huabei
                    )
             try:
                 # 执行sql语句
