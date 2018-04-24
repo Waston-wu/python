@@ -81,7 +81,7 @@ def get_goods(url):
                 # 商家评分
                 business_sock = len(business_info.find_all('li')[2]) - 1
                 # 获取商品剩余时间
-                business_time_text = soup_business.find_all('script')[3].text
+                business_time_text = soup_business.find_all('script')[4].text
                 first = business_time_text.find('new showTime(') + 13
                 last = business_time_text.find(');', first)
                 business_time_int = int(business_time_text[first:last])
@@ -123,7 +123,7 @@ def get_goods(url):
             time.sleep(2)
 
 def main():
-    for x in range(1,20):
+    for x in range(1, 20):
         get_goods('http://www.shiyong.com/mianfei?page=' + str(x))
 
 if __name__ == '__main__':
