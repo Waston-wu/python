@@ -58,13 +58,15 @@ def get_goods(url):
             # 商品id
             goods_id = goods_info.find_all('p', class_='clearfix')[1].find('a')['href'].split('/')[2].split('.')[0]
             # 商品图片
-            goods_image = 'http://www.shiyong.com'+goods_info.find('img')['src']
+            # goods_image = 'http://www.shiyong.com'+goods_info.find('img')['src']
             # 获取商家信息
             response_business = requests.get(goods_link, headers=headers_pc)
             if response_business.status_code == 200:
                 b = response_business.text
                 res = b.encode(response_business.encoding).decode(response_business.apparent_encoding)
                 soup_business = BeautifulSoup(res, 'lxml')
+                # 商品主图
+                goods_image = 'http://www.shiyong.com'+soup_business.find('div', class_='info-img1 img-d fl pd15').find('img')['src']
                 # 商家信息
                 business_info = soup_business.find('div', class_='info-data-supplement1 fr f-12')
                 # 商家在网站的等级
