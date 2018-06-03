@@ -1,25 +1,7 @@
-#-*-coding:utf-8-*-
-
-import requests
-from bs4 import BeautifulSoup
+import json
 import time
-
-
-nums = [1,0,0,1]
-for i in range(len(nums)):
-    if (nums[0] == 0):
-        nums.append(0)
-        del nums[0]
-        break
-    if (nums[i] == 0):
-        nums.append(0)
-        del nums[i]
-for i in range(len(nums)):
-    if (nums[0] == 0):
-        nums.append(0)
-        del nums[0]
-        break
-    if (nums[i] == 0):
-        nums.append(0)
-        del nums[i]
-print(nums)
+with open("./lianjia/tmp/lianjia/"+time.strftime('%Y-%m-%d',time.localtime())+".json", 'r') as f:
+  temp = json.loads(f.read())
+  for url in temp:
+      print(url['url'])
+      break
